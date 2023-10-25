@@ -1,27 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+:root{
+  --bg: #232427;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+
+* {
+  font-family: 'Turret Road', sans-serif;
+  font-weight: 600;
+  color: white;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+nav a{
+  margin-left: 30px;
+  font-weight: 400;
+  color: rgba(190, 198, 251, 0.47);
+}
+
+.inner{
+  background: linear-gradient(180deg, #FF906C, transparent);
+  border-radius: 50%;
+  position: relative;
+}
+
+.inner::after{
+  content: '';
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--bg);
+  border-radius: 50%;
+  width: 90%;
+  height: 90%;
+  z-index: 1;
+}
+
+.inner .mainImage{
+  z-index: 2;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -2%;
+}
+
+.inner .python{
+  left: 50%;
+  transform: translateX(-50%);
 }
