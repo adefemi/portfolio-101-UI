@@ -1,80 +1,122 @@
-import Image from "next/image";
+"use client";
+
 import Header from "./common/header";
+import { useEffect, useRef, useState } from "react";
+import { scrollToElement } from "@/utils/helper";
+import About from "./pages/About";
+import Experience from "./pages/Experience";
+import Main from "./pages/Home";
 
 export default function Home() {
+  const inView = useRef<string>("home");
+  const debounceTimer = useRef<any>(0);
+  const isAtExperienceTop = useRef<boolean>(false);
+  const isAtExperienceBottom = useRef<boolean>(false);
+
+  const goToAbout = () => {
+    scrollToElement("about");
+    setView("about");
+  };
+
+  const goToExperience = () => {
+    scrollToElement("experience");
+    setView("experience");
+  };
+
+  const setView = (view: string) => {
+    setTimeout(() => {
+      inView.current = view;
+    }, 1000);
+  };
+
+  const moveItem = (e: any) => {
+    let scrollDirection = "";
+
+    if (e.deltaY > 0) {
+      scrollDirection = "down";
+    } else {
+      scrollDirection = "up";
+    }
+
+    switch (inView.current) {
+      case "home":
+        if (scrollDirection === "down") {
+          goToAbout();
+        }
+        break;
+
+      case "about":
+        if (scrollDirection === "up") {
+          scrollToElement("home");
+          setView("home");
+        } else if (scrollDirection === "down") {
+          goToExperience();
+        }
+        break;
+      case "experience":
+        if (scrollDirection === "up" && isAtExperienceTop.current) {
+          goToAbout();
+        }
+        // else if (scrollDirection === "down") {
+        //   scrollToElement("projects");
+        //   inView.current = "projects";
+        // }
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleWheel = (e: any) => {
+    if (inView.current === "experience") {
+      const experienceSection = document.getElementById("experience");
+      if (experienceSection) {
+        const rect = experienceSection.getBoundingClientRect();
+        const isTop = rect.top >= 0;
+        const isBottom =
+          experienceSection.scrollTop + experienceSection.clientHeight >=
+          experienceSection.scrollHeight;
+        isAtExperienceTop.current = isTop;
+        isAtExperienceBottom.current = isBottom;
+
+        if (e.deltaY < 0 && !isTop) {
+          e.preventDefault();
+          goToExperience();
+        } else {
+          if ((e.deltaY < 0 && isTop) || (e.deltaY > 0 && isBottom)) {
+            e.preventDefault(); // Only prevent default if at the top/bottom of the section
+          }
+        }
+      }
+    } else {
+      e.preventDefault(); // Prevent default scroll behavior in other sections
+    }
+
+    if (debounceTimer.current === 0) {
+      debounceTimer.current = 1;
+      moveItem(e);
+      setTimeout(() => {
+        debounceTimer.current = 0;
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    window.addEventListener("wheel", handleWheel, { passive: false });
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
+
   return (
     <main>
       <Header />
-      <div className="m-auto mt-72 grid grid-cols-3 gap-24 max-w-fit">
-        <div className="flex flex-col justify-between">
-          <div>
-            <h3 className="flex items-center justify-end font-normal text-lg text-secondary mt-24">
-              Hello There{" "}
-              <Image
-                src="/assets/wave.png"
-                width={30}
-                height={30}
-                alt="hello wave"
-                className="w-12 ml-3"
-              />
-            </h3>
+      <Main goToAbout={goToAbout} />
 
-            <h1 className="flex items-center justify-end font-bold text-6xl mt-6">
-              I am Adefemi Oseni
-            </h1>
-          </div>
-          <div>
-            <h2 className="text-white text-opacity-60 text-2xl font-light flex justify-end mb-36">
-              I enjoy building softwares
-            </h2>
-          </div>
-        </div>
-        <div className="inner m-auto h-150 w-150">
-          <Image
-            src="/assets/html.png"
-            width="150"
-            height="150"
-            alt="mainImage"
-            className="w-24 absolute z-10 -top-12 -left-3"
-          />
-          <Image
-            src="/assets/python.png"
-            width="150"
-            height="150"
-            alt="mainImage"
-            className="w-24 absolute z-10 -top-36 python"
-          />
-          <Image
-            src="/assets/js.png"
-            width="150"
-            height="150"
-            alt="mainImage"
-            className="w-24 absolute z-10 -top-12 -right-3"
-          />
-          <Image
-            src="/assets/main.svg"
-            width="150"
-            height="150"
-            alt="mainImage"
-            className="w-120 mainImage"
-          />
-        </div>
-        <div className="flex flex-col justify-center">
-          <h3 className="font-normal text-lg text-secondary">
-            I&apos;ve been called...
-          </h3>
-          <h1 className=" font-bold text-6xl mt-6">A Software Engineer</h1>
-        </div>
-      </div>
-      <div className="flex items-center justify-center mt-72 relative z-10">
-        <Image
-          src="/assets/mouse.png"
-          width={34}
-          height={34}
-          alt="mouse"
-          className="w-12 cursor-pointer"
-        />
-      </div>
+      <About />
+      <Experience />
     </main>
   );
 }
