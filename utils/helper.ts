@@ -7,6 +7,7 @@ export function scrollToElement(elementId: string): void {
       block: "start",
     });
   }
+  window.location.hash = elementId;
 }
 
 export function debounce(func: any, wait: number): (...args: any) => void {

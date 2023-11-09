@@ -1,10 +1,12 @@
-import React from "react";
+import React, { Ref, forwardRef } from "react";
 import Image from "next/image";
 
-const Experience = () => {
+const Experience = forwardRef((props, ref: Ref<HTMLDivElement>) => {
   return (
     <div
-      className="w-full h-fill content-parent relative pt-20 md:pt-32 4xl:pt-44"
+    ref={ref}
+    {...props}
+      className="w-full min-h-fill content-parent relative pt-20 md:pt-32 4xl:pt-44"
       id="experience"
     >
       <div className="w-full max-w-4xl mx-auto">
@@ -19,7 +21,9 @@ const Experience = () => {
       </div>
     </div>
   );
-};
+});
+
+Experience.displayName = "Experience";
 
 const ExperienceItem = () => {
   return (

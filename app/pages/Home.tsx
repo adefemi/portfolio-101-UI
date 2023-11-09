@@ -1,10 +1,17 @@
-import React from "react";
+import React, { Ref, forwardRef } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const Home = ({ goToAbout }: { goToAbout: () => void }) => {
+interface HomeProps {
+  goToAbout: () => void; // Specify that goToAbout is a function that returns nothing
+}
+
+const Home = forwardRef((props: HomeProps, ref: Ref<HTMLDivElement>) => {
+  const { goToAbout } = props;
+
   return (
     <div
+    ref={ref}
       className="flex flex-col items-center w-full min-h-fill content-parent pt-6 sm:pt-12 md:pt-20 lg:pt-44"
       id="home"
     >
@@ -127,15 +134,23 @@ const Home = ({ goToAbout }: { goToAbout: () => void }) => {
         </div>
       </div>
       <div className="md:flex hidden">
-        <Targetter gotoAbout={goToAbout} /> 
+        <Targetter gotoAbout={goToAbout} />
       </div>
     </div>
   );
-};
+});
 
-const Targetter = ({ gotoAbout, notMt=false }: { gotoAbout: () => void, notMt?: boolean }) => (
+const Targetter = ({
+  gotoAbout,
+  notMt = false,
+}: {
+  gotoAbout: () => void;
+  notMt?: boolean;
+}) => (
   <div
-    className={`items-center justify-center ${!notMt && 'mt-12'} lg:mt-28 4xl:mt-72 relative`}
+    className={`items-center justify-center ${
+      !notMt && "mt-12"
+    } mb-12 lg:mt-28 4xl:mt-72 relative`}
     style={{ zIndex: 3 }}
   >
     <motion.img
@@ -152,5 +167,7 @@ const Targetter = ({ gotoAbout, notMt=false }: { gotoAbout: () => void, notMt?: 
     />
   </div>
 );
+
+Home.displayName = "Home";
 
 export default Home;

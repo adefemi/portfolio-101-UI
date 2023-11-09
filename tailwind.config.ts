@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+import colors from 'tailwindcss/colors'
 
 const config: Config = {
   content: [
@@ -8,6 +9,7 @@ const config: Config = {
   ],
   theme: {
     colors:{
+      ...colors,
       primary: '#232427',
       secondary: '#7183FF',
       white: '#FFFFFF',
@@ -33,6 +35,8 @@ const config: Config = {
       maxWidth: {
         '10xl': '90rem',
         '12xl': '120rem',
+        '13xl': '136rem',
+        '14xl': '140rem',
       },
 
       minHeight: {

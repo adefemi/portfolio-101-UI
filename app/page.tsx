@@ -1,122 +1,157 @@
 "use client";
 
 import Header from "./common/header";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { scrollToElement } from "@/utils/helper";
 import About from "./pages/About";
 import Experience from "./pages/Experience";
 import Main from "./pages/Home";
+import Project from "./pages/Projects";
+import Blog from "./pages/Blogs";
+import Contact from "./pages/Contact";
 
 export default function Home() {
-  const inView = useRef<string>("home");
-  const debounceTimer = useRef<any>(0);
-  const isAtExperienceTop = useRef<boolean>(false);
-  const isAtExperienceBottom = useRef<boolean>(false);
+  const currentSectionIndex = useRef(0);
+  const isScrolling = useRef(false);
+  const touchStartRef = useRef(0);
+  const sectionCanScroll = useRef(false);
+  const sections = [
+    "home",
+    "experience",
+    "about",
+    "project",
+    "contact",
+    "blog",
+  ];
 
-  const goToAbout = () => {
-    scrollToElement("about");
-    setView("about");
-  };
+  const handleSectionalScroll = (direction: number) => {
+    const section = document.getElementById(
+      sections[currentSectionIndex.current]
+    );
+    if (!section) return false;
+    const atTop = section.scrollTop === 0;
+    const atBottom =
+      section.scrollHeight <= section.scrollTop + section.clientHeight;
 
-  const goToExperience = () => {
-    scrollToElement("experience");
-    setView("experience");
-  };
-
-  const setView = (view: string) => {
-    setTimeout(() => {
-      inView.current = view;
-    }, 1000);
-  };
-
-  const moveItem = (e: any) => {
-    let scrollDirection = "";
-
-    if (e.deltaY > 0) {
-      scrollDirection = "down";
-    } else {
-      scrollDirection = "up";
+    if (atTop) {
+      if (direction === -1 && currentSectionIndex.current > 0) {
+        gotoIndex(currentSectionIndex.current - 1);
+        return;
+      }
+    }
+    if (atBottom) {
+      if (
+        direction === 1 &&
+        currentSectionIndex.current < sections.length - 1
+      ) {
+        gotoIndex(currentSectionIndex.current + 1);
+        return;
+      }
     }
 
-    switch (inView.current) {
-      case "home":
-        if (scrollDirection === "down") {
-          goToAbout();
-        }
-        break;
+    section.scrollTo({
+      top: section.scrollTop + direction * section.clientHeight,
+      behavior: "smooth",
+    });
+  };
 
-      case "about":
-        if (scrollDirection === "up") {
-          scrollToElement("home");
-          setView("home");
-        } else if (scrollDirection === "down") {
-          goToExperience();
-        }
-        break;
-      case "experience":
-        if (scrollDirection === "up" && isAtExperienceTop.current) {
-          goToAbout();
-        }
-        // else if (scrollDirection === "down") {
-        //   scrollToElement("projects");
-        //   inView.current = "projects";
-        // }
-        break;
-      default:
-        break;
+  const defaultScroll = (direction: number) => {
+    if (!sectionCanScroll.current) {
+      const nextSectionIndex = currentSectionIndex.current + direction;
+      if (nextSectionIndex < 0 || nextSectionIndex > sections.length - 1)
+        return;
+      gotoIndex(nextSectionIndex);
+      return;
+    } else {
+      handleSectionalScroll(direction);
     }
   };
 
   const handleWheel = (e: any) => {
-    if (inView.current === "experience") {
-      const experienceSection = document.getElementById("experience");
-      if (experienceSection) {
-        const rect = experienceSection.getBoundingClientRect();
-        const isTop = rect.top >= 0;
-        const isBottom =
-          experienceSection.scrollTop + experienceSection.clientHeight >=
-          experienceSection.scrollHeight;
-        isAtExperienceTop.current = isTop;
-        isAtExperienceBottom.current = isBottom;
+    e.preventDefault();
+    if (isScrolling.current) return;
+    const direction = e.deltaY > 0 ? 1 : -1;
 
-        if (e.deltaY < 0 && !isTop) {
-          e.preventDefault();
-          goToExperience();
-        } else {
-          if ((e.deltaY < 0 && isTop) || (e.deltaY > 0 && isBottom)) {
-            e.preventDefault(); // Only prevent default if at the top/bottom of the section
-          }
-        }
-      }
-    } else {
-      e.preventDefault(); // Prevent default scroll behavior in other sections
-    }
+    defaultScroll(direction);
+  };
 
-    if (debounceTimer.current === 0) {
-      debounceTimer.current = 1;
-      moveItem(e);
-      setTimeout(() => {
-        debounceTimer.current = 0;
-      }, 1000);
+  const handleTouchStart = (e: any) => {
+    e.preventDefault();
+    touchStartRef.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: any) => {
+    e.preventDefault();
+
+    const touchEnd = e.changedTouches[0].clientY;
+    const touchStart = touchStartRef.current;
+    if (isScrolling.current) return;
+    const direction = touchStart > touchEnd ? 1 : -1;
+    defaultScroll(direction);
+  };
+
+  const handleHashChange = (hash: string) => {
+    const index = sections.indexOf(hash);
+    currentSectionIndex.current = index;
+    sectionCanScroll.current = checkIfSectionCanScroll(index);
+  };
+
+  const getHashIndex = () => {
+    const hash = window.location.hash.replace("#", "");
+    if (!hash) return null;
+    const index = sections.indexOf(hash);
+    if (index === -1) {
+      // clear hash
+      window.location.hash = "";
+      return null;
     }
+    return index;
   };
 
   useEffect(() => {
-    window.scrollTo(0, 0);
     window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    gotoIndex(getHashIndex() || currentSectionIndex.current);
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
+  const checkIfSectionCanScroll = (index: number) => {
+    const section = document.getElementById(sections[index]);
+    if (!section) return false;
+    const { scrollHeight, clientHeight } = section;
+    return scrollHeight > clientHeight;
+  };
+
+  const gotoIndex = (index: number) => {
+    isScrolling.current = true;
+    scrollToElement(sections[index]);
+    currentSectionIndex.current = index;
+    sectionCanScroll.current = checkIfSectionCanScroll(index);
+    setTimeout(() => {
+      isScrolling.current = false;
+    }, 1000);
+  };
+
   return (
     <main>
-      <Header />
-      <Main goToAbout={goToAbout} />
-
-      <About />
+      <Header
+        handleHashChange={handleHashChange}
+        activeHash={sections[currentSectionIndex.current]}
+      />
+      <Main goToAbout={() => gotoIndex(1)} />
       <Experience />
+      <About />
+      <Project />
+      <Contact />
+      <Blog />
     </main>
   );
 }
