@@ -16,8 +16,8 @@ const BlogCard = ({ hasMaxWidth = false }: { hasMaxWidth?: boolean }) => {
         style={{ objectFit: "cover" }}
         priority
       />
-      <div className="absolute z-10 bottom-0 w-full h-1/3 bg-gradient-to-t from-black via-black/60 px-6  xl:px-12 xl:py-10">
-        <h3 className="text-lg xl:text-3xl mb-3 xl:mb-10">Serverless File Uploads: A Journey from Perplexity to Clarity</h3>
+      <div className="absolute z-10 bottom-0 w-full h-1/3 bg-gradient-to-t from-black via-black/60 px-6 py-5 xl:px-12 xl:py-10">
+        <h3 className="text-lg xl:text-3xl mb-5 font-satoshi xl:mb-10">Serverless File Uploads: A Journey from Perplexity to Clarity</h3>
         <a href="/" target="__blank" className="font-satoshi font-normal">
           Read
         </a>
