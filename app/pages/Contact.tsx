@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import React, {
   InputHTMLAttributes,
   TextareaHTMLAttributes,
@@ -14,9 +15,14 @@ const Contact = forwardRef((props, ref: Ref<HTMLDivElement>) => {
       id="contact"
     >
       <div className="max-w-2xl mx-auto">
-        <h3 className="text-secondary text-xl xl:text-3xl mb-10 md:mb-16 text-right">
+        <motion.h3
+          initial={{ x: -100, opacity: 0 }}
+          whileInView={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, type: "spring", delay: 0.2 }}
+          className="text-secondary text-xl xl:text-3xl mb-10 md:mb-16 text-right"
+        >
           Got ideas? Let&apos;s Chat!
-        </h3>
+        </motion.h3>
 
         <form>
           <InputFormControl title="Name" keyV="name" />
@@ -26,7 +32,14 @@ const Contact = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           <div className="mt-7 sm:mt-10">
             <TextAreaFormControl title="Message" keyV="message" />
           </div>
-          <button className="px-10 py-3 mt-10 bg-orange rounded-md text-black">Send</button>
+          <motion.button
+            initial={{ y: 100, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.5, type: "spring", delay: 0.4 }}
+            className="px-10 py-3 mt-10 bg-orange rounded-md text-black"
+          >
+            Send
+          </motion.button>
         </form>
       </div>
     </div>
@@ -40,8 +53,16 @@ interface InputFormControlProps extends InputHTMLAttributes<HTMLInputElement> {
 
 const InputFormControl = ({ title, keyV, ...rest }: InputFormControlProps) => {
   return (
-    <div className="mb-3 sm:mb-6">
-      <label htmlFor={keyV} className="block font-satoshi text-sm sm:text-base font-normal mb-3">
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, type: "spring", delay: 0.4 }}
+      className="mb-3 sm:mb-6"
+    >
+      <label
+        htmlFor={keyV}
+        className="block font-satoshi text-sm sm:text-base font-normal mb-3"
+      >
         {title}
       </label>
       <input
@@ -51,7 +72,7 @@ const InputFormControl = ({ title, keyV, ...rest }: InputFormControlProps) => {
         {...rest}
         className="bg-transparent border border-white border-opacity-10 rounded-md block w-full h-12 sm:h-16 text-slate-200 pl-4 font-satoshi font-normal"
       />
-    </div>
+    </motion.div>
   );
 };
 
@@ -67,8 +88,16 @@ const TextAreaFormControl = ({
   ...rest
 }: TextAreFormControlProps) => {
   return (
-    <div className="mb-3 sm:mb-6">
-      <label htmlFor={keyV} className="block font-satoshi text-sm sm:text-base font-normal mb-3">
+    <motion.div
+      initial={{ y: 100, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, type: "spring", delay: 0.4 }}
+      className="mb-3 sm:mb-6"
+    >
+      <label
+        htmlFor={keyV}
+        className="block font-satoshi text-sm sm:text-base font-normal mb-3"
+      >
         {title}
       </label>
       <textarea
@@ -78,7 +107,7 @@ const TextAreaFormControl = ({
         {...rest}
         className="bg-transparent border border-white border-opacity-10 rounded-md block w-full h-32 sm:h-40 text-slate-200 pl-4 pt-4 font-satoshi font-normal"
       />
-    </div>
+    </motion.div>
   );
 };
 

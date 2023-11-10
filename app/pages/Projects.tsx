@@ -1,5 +1,6 @@
 import React, { Ref, forwardRef } from "react";
 import ProjectCards from "../common/ProjectCards";
+import { motion } from "framer-motion";
 
 const Project = forwardRef((props, ref: Ref<HTMLDivElement>) => {
   return (
@@ -11,11 +12,23 @@ const Project = forwardRef((props, ref: Ref<HTMLDivElement>) => {
     >
       <div className="grid md:grid-cols-2 gap-x-8 lg:gap-x-20 4xl:gap-x-36 px-5 md:px-8 4xl:px-0">
         <div className="flex flex-col items-end text-sm sm:text-base xl:text-xl lg:leading-8 mb-10 md:mb-0">
-          <h3 className="text-secondary text-xl xl:text-3xl mb-4 ">Projects</h3>
-          <p className="font-satoshi font-normal max-w-lg text-justify">
+          <motion.h3
+            initial={{ x: -100, opacity: 0 }}
+            whileInView={{ x: 0, opacity: 1 }}
+            transition={{ duration: 0.5, type: "spring", delay: 0.2 }}
+            className="text-secondary text-xl xl:text-3xl mb-4 "
+          >
+            Projects
+          </motion.h3>
+          <motion.p
+            initial={{ opacity: 0, y: 100 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, type: "spring", delay: 0.4 }}
+            className="font-satoshi font-normal max-w-lg text-justify"
+          >
             Take a look at some of the projects I&apos;ve been working on in my
             free time; you might find them interesting.
-          </p>
+          </motion.p>
         </div>
         <ProjectCards hasMaxWidth />
       </div>

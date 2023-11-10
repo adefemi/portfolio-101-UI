@@ -1,9 +1,13 @@
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const BlogCard = ({ hasMaxWidth = false }: { hasMaxWidth?: boolean }) => {
   return (
-    <div
+    <motion.div
+    initial={{ opacity: 0, y: 100 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, type: "spring", delay: 0.6 }}
       className={`w-full relative overflow-hidden rounded-2xl ${
         hasMaxWidth && "max-w-5xl"
       } h-120 md:h-84 xl:h-100 4xl:h-150`}
@@ -22,7 +26,7 @@ const BlogCard = ({ hasMaxWidth = false }: { hasMaxWidth?: boolean }) => {
           Read
         </a>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

@@ -1,9 +1,13 @@
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 
 const ProjectCards = ({ hasMaxWidth = false }: { hasMaxWidth?: boolean }) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0, y: 100 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1, type: "spring", delay: 0.6 }}
       className={`w-full relative overflow-hidden rounded-2xl ${
         hasMaxWidth && "max-w-5xl"
       } h-100 md:h-84 xl:h-100 4xl:h-150`}
@@ -21,11 +25,15 @@ const ProjectCards = ({ hasMaxWidth = false }: { hasMaxWidth?: boolean }) => {
         <p className="font-satoshi font-normal text-sm xl:text-lg text-white text-opacity-80 mb-1 xl:mb-10">
           Djuix is all about making APIs creation with django smooth and faster
         </p>
-        <a href="/" target="__blank" className="font-satoshi font-normal text-sm xl:text-base">
+        <a
+          href="/"
+          target="__blank"
+          className="font-satoshi font-normal text-sm xl:text-base"
+        >
           www.djuix.io
         </a>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
