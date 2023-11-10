@@ -6,7 +6,7 @@ const Experience = forwardRef((props, ref: Ref<HTMLDivElement>) => {
     <div
     ref={ref}
     {...props}
-      className="w-full min-h-fill content-parent relative pt-20 md:pt-32 4xl:pt-44"
+      className="w-full h-fill content-parent relative pt-20 md:pt-32 4xl:pt-44 overflow-y-scroll"
       id="experience"
     >
       <div className="w-full max-w-4xl mx-auto">

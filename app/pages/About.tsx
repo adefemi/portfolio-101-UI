@@ -7,11 +7,11 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
     <div
       ref={ref}
       {...props}
-      className="w-full min-h-fill content-parent relative"
+      className="w-full h-fill content-parent relative overflow-y-scroll pb-6"
       id="about"
     >
       <motion.div
-        className="absolute right-0 md:top-32 bottom-0 h-2/4 md:h-minus-32 w-full max-w-4xl 4xl:max-w-10xl"
+        className="absolute right-0 4xl:top-32 bottom-0 h-2/4 md:h-3/4 4xl:h-minus-32 w-full max-w-full xl:max-w-5xl 4xl:max-w-10xl"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 3, delay: 0.5 }}
@@ -19,7 +19,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
         <Image src="/assets/me.png" alt="me" fill sizes="100%" priority />
       </motion.div>
 
-      <div className="max-w-2xl h-fill md:h-auto px-5 sm:px-10 xl:px-0 mx-auto xl:mx-0 xl:ml-32 4xl:ml-130 bg-black bg-opacity-70 xl:bg-opacity-0 pt-10 sm:pt-20 md:pt-32 pb-8 xl:pb-0 4xl:pt-72 lg:text-justify text-sm sm:text-base xl:text-xl lg:leading-8 relative z-10">
+      <div className="max-w-lg lg:max-w-2xl top-0 md:top-40 xl:top-20 h-fill md:h-auto px-5 sm:px-10 xl:px-0 mx-auto xl:mx-0 xl:ml-32 4xl:ml-130 bg-black bg-opacity-70 xl:bg-opacity-0 pt-20 md:pt-10 pb-8 xl:pb-0 4xl:pt-72 lg:text-justify text-sm sm:text-base xl:text-xl lg:leading-8 relative z-10">
         <h3 className="text-secondary text-right text-xl xl:text-3xl mb-4 lg:mb-8">
           About Me
         </h3>

@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .items-auto {
+    align-items: normal;
+  }
+}
+
 @font-face {
   font-family: 'Satoshi-Variable';
   src: url('/fonts/Satoshi-Variable.woff2') format('woff2'),

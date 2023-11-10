@@ -18,8 +18,8 @@ const config: Config = {
     },
     screens: {
       // handle extra small screens for iphone 5
-      'xs': '320px',
-      'sm': '340px',
+      'xs': '375px',
+      'sm': '580px',
       'md': '768px',
       'lg': '1024px',
       'xl': '1280px',
@@ -62,6 +62,8 @@ const config: Config = {
         "100": "25rem",
         "120": "30rem",
       },
+
+      
     },
   },
   plugins: [],

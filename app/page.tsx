@@ -76,13 +76,11 @@ export default function Home() {
   };
 
   const handleTouchStart = (e: any) => {
-    e.preventDefault();
     touchStartRef.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e: any) => {
     e.preventDefault();
-
     const touchEnd = e.changedTouches[0].clientY;
     const touchStart = touchStartRef.current;
     if (isScrolling.current) return;
