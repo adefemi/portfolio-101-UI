@@ -1,3 +1,4 @@
+import { getContactUrl } from "@/utils/network";
 import { motion } from "framer-motion";
 import React, {
   InputHTMLAttributes,
@@ -7,6 +8,30 @@ import React, {
 } from "react";
 
 const Contact = forwardRef((props, ref: Ref<HTMLDivElement>) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const formData = new FormData(e.currentTarget);
+    const res = await fetch(getContactUrl, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.status === 201) {
+      alert("Message sent successfully");
+      if (e.currentTarget) {
+        e.currentTarget.reset();
+      }
+      setIsLoading(false);
+      return;
+    }
+    setIsLoading(false);
+
+    alert("Something went wrong");
+  };
+
   return (
     <div
       ref={ref}
@@ -24,7 +49,7 @@ const Contact = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           Got ideas? Let&apos;s Chat!
         </motion.h3>
 
-        <form>
+        <form onSubmit={handleSubmit}>
           <InputFormControl title="Name" keyV="name" />
           <div className="mt-7 sm:mt-10">
             <InputFormControl title="Email" keyV="email" type="email" />
@@ -35,10 +60,12 @@ const Contact = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           <motion.button
             initial={{ y: 100, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true }}
+            disabled={isLoading}
             transition={{ duration: 0.5, type: "spring", delay: 0.4 }}
             className="px-10 py-3 mt-10 bg-orange rounded-md text-black"
           >
-            Send
+            {isLoading ? "Sending..." : "Send"}
           </motion.button>
         </form>
       </div>
@@ -56,6 +83,7 @@ const InputFormControl = ({ title, keyV, ...rest }: InputFormControlProps) => {
     <motion.div
       initial={{ y: 100, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true }}
       transition={{ duration: 0.5, type: "spring", delay: 0.4 }}
       className="mb-3 sm:mb-6"
     >
@@ -91,6 +119,7 @@ const TextAreaFormControl = ({
     <motion.div
       initial={{ y: 100, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true }}
       transition={{ duration: 0.5, type: "spring", delay: 0.4 }}
       className="mb-3 sm:mb-6"
     >

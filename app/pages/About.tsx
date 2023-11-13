@@ -7,7 +7,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
     <div
       ref={ref}
       {...props}
-      className="w-full h-fill content-parent relative overflow-y-scroll pb-6"
+      className="w-full h-fill content-parent relative overflow-y-scroll pb-6 no-scrollbar"
       id="about"
     >
       <motion.div
@@ -31,6 +31,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
         <motion.p
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, type: "spring", delay: 0.4 }}
           className="mb-6 font-satoshi font-normal"
         >
@@ -45,6 +46,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
         <motion.p
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
           transition={{ duration: 1, type: "spring", delay: 0.6 }}
           className="mb-6 font-satoshi font-normal"
         >
@@ -59,6 +61,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           <motion.h3
             initial={{ x: -100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5, type: "spring", delay: 0.8 }}
             className="text-secondary text-2xl mt-5 lg:mt-10 xl:mt-24"
           >
@@ -67,6 +70,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           <motion.a
             initial={{ opacity: 0, y: 100 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, type: "spring", delay: 0.9 }}
             href="mailto:oseni.adefemigreat@gmail.com"
           >
@@ -76,6 +80,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           <motion.h3
             initial={{ x: -100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5, type: "spring", delay: 1 }}
             className="text-secondary text-2xl mt-4 lg:mt-8 xl:mt-16"
           >
@@ -84,6 +89,7 @@ const About = forwardRef((props, ref: Ref<HTMLDivElement>) => {
           <motion.div
             initial={{ x: 100, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 0.5, type: "spring", delay: 1.2 }}
             className="flex items-center mt-4"
           >

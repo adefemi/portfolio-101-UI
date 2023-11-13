@@ -1,17 +1,43 @@
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useState } from "react";
+import Menu from "./menu";
+import { motion, AnimatePresence } from "framer-motion";
+import Close from "./close";
 
 const Header = ({
   handleHashChange,
-  activeHash,
 }: {
-  activeHash: string;
   handleHashChange: (hash: string) => void;
 }) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const getActive = (hash: string) => {
-    return hash === activeHash ? "text-slate-100 text-xl" : "";
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const menuVariants = {
+    open: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+      },
+    },
+    closed: {
+      x: "-100%",
+      opacity: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+      },
+    },
+  };
+
+  const myHandleHashChange = (hash: string) => {
+    handleHashChange(hash);
+    toggleMenu();
   };
 
   return (
@@ -21,46 +47,64 @@ const Header = ({
           <Logo />
         </Link>
         <nav className="hidden lg:flex items-end">
-          <Linker
-            keyV="experience"
-            title="experience"
-            handleHashChange={handleHashChange}
-            active={getActive("experience")}
-          />
-          <Linker
-            keyV="about"
-            title="about"
-            handleHashChange={handleHashChange}
-            active={getActive("about")}
-          />
-          <Linker
-            keyV="project"
-            title="projects"
-            handleHashChange={handleHashChange}
-            active={getActive("project")}
-          />
-          <Linker
-            keyV="contact"
-            title="contact"
-            handleHashChange={handleHashChange}
-            active={getActive("contact")}
-          />
-          <Linker
-            keyV="blog"
-            title="blogs"
-            handleHashChange={handleHashChange}
-            active={getActive("blog")}
-          />
+          <NavItems handleHashChange={handleHashChange} />
         </nav>
+        <button className="block lg:hidden" onClick={toggleMenu}>
+          <Menu />
+        </button>
+        <AnimatePresence>
+          {isMenuOpen && (
+            <motion.div
+              className="absolute left-0 top-0 bg-primary z-40 h-fill w-full flex flex-col items-center justify-between px-5 py-36"
+              initial="closed"
+              animate="open"
+              exit="closed"
+              variants={menuVariants}
+            >
+              <NavItems handleHashChange={myHandleHashChange} />
+              <button onClick={toggleMenu} className="absolute top-5 right-5">
+                <Close />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
+  );
+};
+
+const NavItems = ({
+  handleHashChange,
+}: {
+  handleHashChange: (hash: string) => void;
+}) => {
+  return (
+    <>
+      <Linker
+        keyV="experience"
+        title="experience"
+        handleHashChange={handleHashChange}
+      />
+      <Linker keyV="about" title="about" handleHashChange={handleHashChange} />
+      <Linker
+        keyV="project"
+        title="projects"
+        handleHashChange={handleHashChange}
+      />
+      <Linker
+        keyV="contact"
+        title="contact"
+        handleHashChange={handleHashChange}
+      />
+      <Linker keyV="blog" title="blogs" handleHashChange={handleHashChange} />
+    </>
   );
 };
 
 interface LinkerProps {
   keyV: string;
   title: string;
-  active: string;
+  active?: string;
   handleHashChange: (hash: string) => void;
 }
 
@@ -68,7 +112,7 @@ const Linker = (props: LinkerProps) => (
   <Link
     href={`#${props.keyV}`}
     onClick={() => props.handleHashChange(props.keyV)}
-    className={`text-sm text-heading ${props.active}`}
+    className={`text-sm text-heading ${props.active} block`}
   >
     {props.title}
   </Link>

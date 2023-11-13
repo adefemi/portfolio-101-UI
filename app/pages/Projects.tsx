@@ -1,8 +1,27 @@
-import React, { Ref, forwardRef } from "react";
+import React, { Ref, forwardRef, useState } from "react";
 import ProjectCards from "../common/ProjectCards";
 import { motion } from "framer-motion";
+import { ProjectType } from "@/utils/types";
+import { getProjectsUrl } from "@/utils/network";
 
 const Project = forwardRef((props, ref: Ref<HTMLDivElement>) => {
+  const [projects, setProjects] = useState<ProjectType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const getProjects = async () => {
+    const res = await fetch(getProjectsUrl);
+    const data = await res.json();
+    setProjects(data);
+    setIsLoading(false);
+  };
+
+  React.useEffect(() => {
+    getProjects();
+  }, []);
+
+  const focused = projects.find((project) => project.focused) as ProjectType;
+  const notFocused = projects.filter((project) => !project.focused);
+
   return (
     <div
       ref={ref}
@@ -30,7 +49,7 @@ const Project = forwardRef((props, ref: Ref<HTMLDivElement>) => {
             free time; you might find them interesting.
           </motion.p>
         </div>
-        <ProjectCards hasMaxWidth />
+        {!isLoading && focused && <ProjectCards data={focused} hasMaxWidth />}
       </div>
       <div className="mx-auto max-w-13xl mt-20 lg:mt-40 px-5 md:px-8 4xl:px-0">
         <h3 className="text-secondary text-xl xl:text-3xl mb-4 ">
@@ -39,16 +58,13 @@ const Project = forwardRef((props, ref: Ref<HTMLDivElement>) => {
       </div>
       <div className="border-t border-white border-opacity-5  px-5 md:px-8 4xl:px-0">
         <div className="grid gap-8 md:gap-4 lg:gap-12 md:grid-cols-2 max-w-13xl mx-auto mt-8 md:mt-16">
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
-          <ProjectCards />
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            notFocused.map((project, index) => (
+              <ProjectCards key={index} data={project} />
+            ))
+          )}
         </div>
       </div>
     </div>

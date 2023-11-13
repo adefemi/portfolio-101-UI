@@ -142,7 +142,6 @@ export default function Home() {
     <main>
       <Header
         handleHashChange={handleHashChange}
-        activeHash={sections[currentSectionIndex.current]}
       />
       <Main goToAbout={() => gotoIndex(1)} />
       <Experience />
