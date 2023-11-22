@@ -51,7 +51,7 @@ export default function Home() {
     }
     isScrolling.current = true;
     section.scrollTo({
-      top: section.scrollTop + direction * section.clientHeight,
+      top: section.scrollTop + direction * (section.clientHeight / 2),
       behavior: "smooth",
     });
     setTimeout(() => {
