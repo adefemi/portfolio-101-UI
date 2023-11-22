@@ -49,11 +49,14 @@ export default function Home() {
         return;
       }
     }
-
+    isScrolling.current = true;
     section.scrollTo({
       top: section.scrollTop + direction * section.clientHeight,
       behavior: "smooth",
     });
+    setTimeout(() => {
+      isScrolling.current = false;
+    }, 500);
   };
 
   const defaultScroll = (direction: number) => {
@@ -69,35 +72,27 @@ export default function Home() {
   };
 
   const handleWheel = (e: any) => {
-    if (eventActive.current || isScrolling.current) return;
-  eventActive.current = true;
     e.preventDefault();
+
     if (isScrolling.current) return;
+    console.log("wheel move");
     const direction = e.deltaY > 0 ? 1 : -1;
 
     defaultScroll(direction);
-    setTimeout(() => {
-      eventActive.current = false;
-    }, 500);
   };
 
   const handleTouchStart = (e: any) => {
-    if (eventActive.current) return;
-  eventActive.current = true;
     touchStartRef.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e: any) => {
-    if (!eventActive.current || isScrolling.current) return;
-  e.preventDefault();
+    e.preventDefault();
+    if (isScrolling.current) return;
     const touchEnd = e.changedTouches[0].clientY;
     const touchStart = touchStartRef.current;
-    if (isScrolling.current) return;
+
     const direction = touchStart > touchEnd ? 1 : -1;
     defaultScroll(direction);
-    setTimeout(() => {
-      eventActive.current = false;
-    }, 500);
   };
 
   const handleHashChange = (hash: string) => {
@@ -152,9 +147,7 @@ export default function Home() {
 
   return (
     <main>
-      <Header
-        handleHashChange={handleHashChange}
-      />
+      <Header handleHashChange={handleHashChange} />
       <Main goToAbout={() => gotoIndex(1)} />
       <Experience />
       <About />

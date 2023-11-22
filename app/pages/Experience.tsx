@@ -62,7 +62,7 @@ const ExperienceItem = ({ data }: { data: ExperienceType }) => {
           transition={{ duration: 1, delay: 0.5 }}
           className="w-8 h-8 md:w-14 md:h-14 lg:w-20 lg:h-20 bg-orange p-1 flex items-center justify-center rounded-full"
         >
-          <Image
+          <img
             src={data.logo}
             alt="logo"
             width={20}

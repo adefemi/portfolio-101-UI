@@ -21,19 +21,18 @@ const ProjectCards = ({
         hasMaxWidth && "max-w-5xl"
       } h-100 md:h-84 xl:h-100 4xl:h-150`}
     >
-      <Image
+      <img
         src={data.cover}
-        fill
-        sizes="100%"
-        alt="mainProject"
-        style={{ objectFit: "cover" }}
-        priority
+        alt={data.name}
+        style={{ objectFit: "cover", width: "100%", height: "100%" }}
       />
-      <div className="absolute z-10 bottom-0 w-full h-1/3 bg-gradient-to-t from-black via-black/60 px-6  xl:px-12 xl:py-6">
-        <h3 className="text-2xl xl:text-5xl">{data.name}</h3>
-        <p className="font-satoshi font-normal text-sm xl:text-lg text-white text-opacity-80 mb-1 xl:mb-10">
-          {data.description}
-        </p>
+      <div className="absolute z-10 bottom-0 w-full h-36 bg-black bg-opacity-80 px-6  xl:px-12 xl:py-6 flex flex-col justify-around">
+        <div>
+          <h3 className="text-2xl xl:text-5xl">{data.name}</h3>
+          <p className="font-satoshi font-normal text-sm xl:text-lg text-white text-opacity-80 mb-1 xl:mb-10">
+            {data.description}
+          </p>
+        </div>
         <a
           href={data.link}
           target="__blank"
