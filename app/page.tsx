@@ -108,16 +108,16 @@ export default function Home() {
 
   useEffect(() => {
     window.addEventListener("wheel", handleWheel, { passive: false });
-    window.addEventListener("touchstart", handleTouchStart, {
-      passive: false,
-    });
-    window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    gotoIndex(getHashIndex() || currentSectionIndex.current);
+    // window.addEventListener("touchstart", handleTouchStart, {
+    //   passive: false,
+    // });
+    // window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    // gotoIndex(getHashIndex() || currentSectionIndex.current);
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouchStart);
-      window.removeEventListener("touchmove", handleTouchMove);
+      // window.removeEventListener("touchstart", handleTouchStart);
+      // window.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
