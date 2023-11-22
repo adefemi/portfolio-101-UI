@@ -28,8 +28,8 @@ const ProjectCards = ({
       />
       <div className="absolute z-10 bottom-0 w-full h-36 bg-black bg-opacity-80 px-6  xl:px-12 xl:py-6 flex flex-col justify-around">
         <div>
-          <h3 className="text-2xl xl:text-5xl">{data.name}</h3>
-          <p className="font-satoshi font-normal text-sm xl:text-lg text-white text-opacity-80 mb-1 xl:mb-10">
+          <h3 className="text-2xl xl:text-4xl">{data.name}</h3>
+          <p className="font-satoshi font-normal text-sm text-white text-opacity-80 mb-1 xl:mb-10">
             {data.description}
           </p>
         </div>

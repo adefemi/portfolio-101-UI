@@ -26,7 +26,7 @@ const BlogCard = ({
         style={{ objectFit: "cover", width: "100%", height: "100%" }}
       />
       <div className="absolute z-10 bottom-0 w-full h-36 lg:h-24 bg-black bg-opacity-80 px-6 py-5 xl:px-12 xl:py-10 flex flex-col justify-around">
-        <h3 className="text-lg xl:text-3xl font-satoshi">
+        <h3 className="text-lg xl:text-xl font-satoshi">
           {data.title}
         </h3>
         <a
