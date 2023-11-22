@@ -15,6 +15,7 @@ export default function Home() {
   const isScrolling = useRef(false);
   const touchStartRef = useRef(0);
   const sectionCanScroll = useRef(false);
+  const eventActive = useRef(false);
   const sections = [
     "home",
     "experience",
@@ -68,24 +69,35 @@ export default function Home() {
   };
 
   const handleWheel = (e: any) => {
+    if (eventActive.current || isScrolling.current) return;
+  eventActive.current = true;
     e.preventDefault();
     if (isScrolling.current) return;
     const direction = e.deltaY > 0 ? 1 : -1;
 
     defaultScroll(direction);
+    setTimeout(() => {
+      eventActive.current = false;
+    }, 500);
   };
 
   const handleTouchStart = (e: any) => {
+    if (eventActive.current) return;
+  eventActive.current = true;
     touchStartRef.current = e.touches[0].clientY;
   };
 
   const handleTouchMove = (e: any) => {
-    e.preventDefault();
+    if (!eventActive.current || isScrolling.current) return;
+  e.preventDefault();
     const touchEnd = e.changedTouches[0].clientY;
     const touchStart = touchStartRef.current;
     if (isScrolling.current) return;
     const direction = touchStart > touchEnd ? 1 : -1;
     defaultScroll(direction);
+    setTimeout(() => {
+      eventActive.current = false;
+    }, 500);
   };
 
   const handleHashChange = (hash: string) => {
@@ -108,16 +120,16 @@ export default function Home() {
 
   useEffect(() => {
     window.addEventListener("wheel", handleWheel, { passive: false });
-    // window.addEventListener("touchstart", handleTouchStart, {
-    //   passive: false,
-    // });
-    // window.addEventListener("touchmove", handleTouchMove, { passive: false });
-    // gotoIndex(getHashIndex() || currentSectionIndex.current);
+    window.addEventListener("touchstart", handleTouchStart, {
+      passive: false,
+    });
+    window.addEventListener("touchmove", handleTouchMove, { passive: false });
+    gotoIndex(getHashIndex() || currentSectionIndex.current);
 
     return () => {
       window.removeEventListener("wheel", handleWheel);
-      // window.removeEventListener("touchstart", handleTouchStart);
-      // window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchmove", handleTouchMove);
     };
   }, []);
 
